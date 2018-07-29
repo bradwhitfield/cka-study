@@ -36,12 +36,12 @@ resource "google_compute_instance" "master" {
 }
 
 resource "google_compute_instance" "worker" {
-  name         = "worker"
+  name         = "worker-${count.index}"
   count        = "${var.worker_count}"
   machine_type = "${var.machine_type}"
   zone         = "us-east1-b"
 
-  tags = ["worker", "Kubernetes"]
+  tags = ["worker", "kubernetes"]
 
   boot_disk {
     initialize_params {
@@ -63,6 +63,6 @@ resource "google_compute_instance" "worker" {
   }
 
   metadata = {
-    user-data = "${file("templates/worker.ign")}"
+    user-data = "${file("templates/worker.tpl")}"
   }
 }

@@ -8,4 +8,7 @@ apt update
 apt-get install -y kubeadm=1.9.1-00 kubelet=1.9.1-00
 wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubeadm init --pod-network-cidr 10.244.0.0/16
-kubectl apply -f kube-flannel.yml
+mkdir ~/.kube
+cp -i /etc/kubernetes/admin.conf ~/.kube/config
+kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f kube-flannel.yml
+echo "source <(kubectl completion bash)" >> ~/.bashrc
