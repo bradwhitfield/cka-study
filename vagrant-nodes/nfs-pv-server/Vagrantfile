@@ -1,0 +1,28 @@
+$script = <<-SCRIPT
+    apt update
+    apt install -y nfs-kernel-server
+    mkdir -p /opt/sfw
+    chmod 1777 /opt/sfw/
+    echo software > /opt/sfw/hello.txt
+    echo "/opt/sfw/ *(rw,sync,no_root_squash,subtree_check)" >> /etc/exports
+    exportfs -ra
+SCRIPT
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "kmm/ubuntu-xenial64"
+    config.vm.network "public_network", bridge: "External"
+    config.vm.hostname = "nfs-pv-server"
+  
+    config.vm.provider "hyperv" do |h|
+      h.vmname = "cka-nfs-pv-server"
+      h.cpus = 2
+      h.memory = 2048
+      h.maxmemory = 2048
+  
+      h.enable_virtualization_extensions = true
+      h.differencing_disk = true
+      h.auto_start_action = "Nothing"
+    end
+  
+    config.vm.provision "shell", inline: $script
+  end

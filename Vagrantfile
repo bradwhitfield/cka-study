@@ -14,5 +14,13 @@ Vagrant.configure("2") do |config|
     h.auto_start_action = "Nothing"
   end
 
+  config.vm.provision "shell", inline: <<-SHELL
+    swapoff -a
+    sed -i '$d' /etc/fstab
+    systemctl mask dev-sda3.swap
+  SHELL
+
+  config.vm.provision :reload
+
   config.vm.provision "shell", path: "cluster/templates/master.tpl"
 end

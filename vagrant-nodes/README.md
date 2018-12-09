@@ -1,0 +1,1 @@
+Non-master Vagrant nodes in here
