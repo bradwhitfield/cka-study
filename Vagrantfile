@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     h.maxmemory = 8192
 
     h.enable_virtualization_extensions = true
-    h.differencing_disk = true
+    h.linked_clone = true
     h.auto_start_action = "Nothing"
   end
 

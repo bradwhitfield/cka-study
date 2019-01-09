@@ -65,3 +65,33 @@ apt install -y nfs-common
 
 # Then follow the stuff in Exercise 9.2 Step 6 onward.
 ```
+
+# Scheduling
+
+Affinity and Anti-Affinity will deprecate `nodeSelector` once they are considered stable, and should be able to do everything `nodeSelector` can.
+
+I need to read more into topologyKey. It's not clear to me if in the case of Affinity if the default scheduler would apply across this key, or match this key, such as across zones, or all in one zone. I think the answer is the later.
+
+`tolerationSeconds` is a cool flag I have not looked at.
+
+# Security
+
+## Admission Controllers
+
+Software that runs after a k8s API call is authenticated and authorized.
+
+‘Admission controllers may be “validating”, “mutating”, or both. Mutating controllers may modify the objects they admit; validating controllers may not.’ (from https://kubernetes.io/docs/reference/)
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    scheduler.alpha.kubernetes.io/node-selector: name-of-node-selector
+  name: namespace3
+```
+
+## Network Policies
+
+* https://kubernetes.io/docs/concepts/services-networking/network-policies/
+* https://github.com/ahmetb/kubernetes-network-policy-recipes
